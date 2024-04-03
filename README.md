@@ -5,10 +5,10 @@
 #### 软件架构
 基本运行环境为：
 1.jdk>=1.8;
-2。mysql8.0;
+2。mysql 8.0;
 3.redis;
 4.springboot>=2.1.0
-
+5.node.js 16
 #### 安装教程
 
 1.  xxxx
