@@ -8,7 +8,7 @@
 2。mysql 8.0;
 3.redis;
 4.springboot>=2.1.0
-5.node.js 16
+5.vue3 element-ui
 #### 安装教程
 
 1.  xxxx
