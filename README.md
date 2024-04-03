@@ -4,11 +4,15 @@
 本项目是一个仿csdn个人博客系统
 #### 软件架构
 基本运行环境为：
-1.jdk>=1.8;
-2。mysql 8.0;
-3.redis;
-4.springboot>=2.1.0
-5.vue3 element-ui
+jdk>=1.8;
+
+mysql 8.0;
+
+redis;
+
+springboot>=2.1.0
+
+vue3 element-ui
 #### 安装教程
 
 1.  xxxx
