@@ -8,5 +8,6 @@ public class BlogDataControllerTest {
 
     @Test
     public void deleteuser() {
+        System.out.println("333333333333333");
     }
 }

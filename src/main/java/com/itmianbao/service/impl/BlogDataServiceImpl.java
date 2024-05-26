@@ -1,5 +1,7 @@
 package com.itmianbao.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itmianbao.mapper.BlogDataMapper;
 import com.itmianbao.mapper.UserMapper;
 import com.itmianbao.pojo.BlogData;
@@ -99,4 +101,31 @@ public class BlogDataServiceImpl implements BlogDataservice {
 
         return Result.success();
     }
+
+    @Override
+    public List<BlogData> pageInfo(int page, int size) {
+        PageHelper.startPage(page,size);
+        List<BlogData> blogData=blogDataMapper.list4();
+        PageInfo<BlogData> pageInfo=new PageInfo<>(blogData);
+        return pageInfo.getList();
+    }
+
+    @Override
+    public int countNum() {
+        return blogDataMapper.count();
+    }
+
+    @Override
+    public List<BlogData> pageInfo2(int page, int size) {
+        PageHelper.startPage(page,size);
+        List<BlogData> blogData=blogDataMapper.list6();
+        PageInfo<BlogData> pageInfo=new PageInfo<>(blogData);
+        return pageInfo.getList();
+    }
+
+    @Override
+    public int countNum2() {
+        return blogDataMapper.count2();
+    }
+
 }

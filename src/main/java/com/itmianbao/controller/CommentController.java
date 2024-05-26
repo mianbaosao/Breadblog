@@ -36,7 +36,7 @@ public class CommentController {
      * 插入评论
      *
      * @param comment 评论信息
-     * @return 返回评论ID
+     * @return 返回评论ID1
      */
     @PostMapping("/insertComment")
     public Result save(@RequestBody Comment comment) {

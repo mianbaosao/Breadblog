@@ -1,8 +1,13 @@
 package com.itmianbao.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.itmianbao.pojo.BlogData;
 import com.itmianbao.pojo.Result;
 import com.itmianbao.service.BlogDataservice;
+import com.itmianbao.utils.StpAdminUtil;
+import com.itmianbao.utils.StpUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,18 +48,39 @@ public class BlogDataController {
      * @return 返回博客列表
      */
     @GetMapping("/showblog")
-
     public Result list() {
         log.info("查询全部博客");
         // 先从Redis中获取数据
-        List<BlogData> blogListFromRedis = (List<BlogData>) redisTemplate.opsForValue().get("blogList");
+        if(StpUserUtil.isLogin()||StpAdminUtil.isLogin()) {
 
-        List<BlogData> blogListFromDB = blogDataservice.list4();
-        blogListFromDB.forEach(blogData ->{
-            this.isBlogLiked(blogData);
-        });
-        return Result.success(blogListFromDB);
+            System.out.println("管理员是否登录:" + StpAdminUtil.isLogin());
+
+            List<BlogData> blogListFromDB = blogDataservice.list4();
+            blogListFromDB.forEach(blogData -> {
+                this.isBlogLiked(blogData);
+            });
+            return Result.success(blogListFromDB);
+        }else{
+            System.out.println("鉴权失败");
+            return Result.error("请登录！");
+        }
     }
+
+    /**
+     * 展示分页数据
+     * @return
+     */
+    @GetMapping("/showPageBlog")
+    public Result showPage(@RequestParam int page, @RequestParam int size) {
+        List<BlogData> pageData=blogDataservice.pageInfo(page,size);
+        int sum=blogDataservice.countNum();
+        pageData.forEach(blogData -> {
+                this.isBlogLiked(blogData);
+            });
+        pageData.get(0).setTotal(sum);
+            return Result.success(pageData);
+    }
+
 
     /**
      * 插入博客
@@ -142,9 +168,16 @@ public class BlogDataController {
      * @return 返回回收站博客列表
      */
     @GetMapping("/showrubbish")
-    public Result list2() {
-        List<BlogData> deptList = blogDataservice.list6();
-        return Result.success(deptList);
+    public Result list2(@RequestParam int page, @RequestParam int size) {
+       /* List<BlogData> deptList = blogDataservice.list6();
+        return Result.success(deptList);*/
+        List<BlogData> pageData=blogDataservice.pageInfo2(page,size);
+        int sum=blogDataservice.countNum2();
+        pageData.forEach(blogData -> {
+            this.isBlogLiked(blogData);
+        });
+        pageData.get(0).setTotal(sum);
+        return Result.success(pageData);
     }
 
     /**

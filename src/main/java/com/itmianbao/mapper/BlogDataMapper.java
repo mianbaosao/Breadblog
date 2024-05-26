@@ -49,4 +49,9 @@ public interface BlogDataMapper {
     //移除点赞
     @Update("UPDATE blogdata SET likes=likes-1 WHERE blogId = #{blogId}")
     Boolean deleteLike(int blogId);
+    @Select("SELECT COUNT(*) FROM blogdata where allowIssue='1'")
+    int count();
+    //垃圾箱总数
+    @Select("SELECT COUNT(*) FROM blogdata where allowIssue='0'")
+    int count2();
 }

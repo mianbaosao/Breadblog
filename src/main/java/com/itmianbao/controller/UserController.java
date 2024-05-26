@@ -1,12 +1,12 @@
 package com.itmianbao.controller;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
 import com.itmianbao.common.JwtUtils;
 import com.itmianbao.pojo.Result;
 import com.itmianbao.pojo.User;
 import com.itmianbao.service.UserService;
-import com.itmianbao.utils.CodeUtil;
-import com.itmianbao.utils.RedisUtil;
-import com.itmianbao.utils.SendMsg;
+import com.itmianbao.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * 用户控制器
+ * 用户
  */
 @Slf4j
 @RestController
@@ -141,6 +141,13 @@ public class   UserController {
         }
         // 登录成功生成令牌，返回令牌
         if (e != null) {
+            if(e.getAccount().equals("1623666966")){
+                StpAdminUtil.login(e.getId());
+                System.out.println("管理员登录成功");
+            }else{
+                StpUserUtil.login(e.getId());
+                System.out.println("用户登陆成功");
+            }
             Map<String, Object> claims = new HashMap<>();
             // 生成JWT令牌之前，将用户名添加到claims中
             claims.put("id", e.getId());
@@ -148,9 +155,12 @@ public class   UserController {
             claims.put("account", e.getAccount());
             claims.put("username", e.getUsername());
             claims.put("cover", e.getCover());
+            claims.put("token",StpAdminUtil.getTokenInfo());
+
             userId=e.getId();
             // 生成JWT令牌，并将其赋值给jwt
             String jwt = JwtUtils.generateJwt(claims); // jwt包含了当前登录的员工信息
+            System.out.println(StpAdminUtil.getTokenInfo().tokenValue);
             return Result.success(jwt);
         }
         // 登陆失败，返回错误信息
@@ -174,6 +184,13 @@ public class   UserController {
             claims.put("account", e.getAccount());
             claims.put("username", e.getUsername());
             claims.put("cover", e.getCover());
+            if(e.getAccount().equals("1623666966")){
+                StpAdminUtil.login(e.getId());
+                System.out.println("管理员登录成功");
+            }else{
+                StpUserUtil.login(e.getId());
+                System.out.println("用户登陆成功");
+            }
             // 生成JWT令牌，并将其赋值给jwt
             String jwt = JwtUtils.generateJwt(claims); // jwt包含了当前登录的员工信息
             return Result.success(jwt);

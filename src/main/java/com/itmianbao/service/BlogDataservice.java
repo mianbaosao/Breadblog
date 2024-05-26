@@ -30,6 +30,12 @@ public interface BlogDataservice {
     void updatebrowse(Integer blogId);
     //文章是否点赞
     Result likeBlog(int blogId, int userId);
-
-
+    //分页数据
+    List<BlogData> pageInfo(int page,int size);
+    //求总量
+    int countNum();
+    //求垃圾箱分页
+    List<BlogData> pageInfo2(int page, int size);
+    //垃圾箱数量
+    int countNum2();
 }
